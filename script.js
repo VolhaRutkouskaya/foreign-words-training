@@ -4,7 +4,7 @@ const wordsProgress = document.querySelector('#words-progress');
 const shuffleWords = document.querySelector('#shuffle-words');
 const examProgress = document.querySelector('#exam-progress');
 const slider = document.querySelector('.slider');
-const flipCard = document.querySelector('.flip-card h1');
+const flipCard = document.querySelector('.flip-card');
 const cardFront = document.querySelector('#card-front');
 const frontTitle = cardFront.querySelector('h1');
 const cardBack = document.querySelector('#card-back');
@@ -16,42 +16,45 @@ const next = document.querySelector('#next');
 const studying = document.querySelector('.study-cards');
 const examination = document.querySelector('#exam-cards');
 
-/*function randomInteger(max) {
+function randomInteger(max) {
     let rand = Math.random() * (max + 1);
     return Math.floor(rand);
-};*/
+};
 
-class wordList {
+class word {
     constructor(title, translation, example) {
         this.title = title;
         this.translation = translation;
         this.example = example;
     }
 }
-const wordList1 = new wordList("book", "книга", "один из видов печатной продукции");
-const wordList2 = new wordList("chair", "стул", "предмет на четырех ножках, без подлокотников, обычно со спинкой, предназначен для сидения одного человека");
-const wordList3 = new wordList("window", "окно", "отверстие в стене здания или стенке какого-либо транспортного средства; застекленная рама, закрываюшая это отверстие");
-const wordList4 = new wordList("know", "знать", "ведать, быть знакомым(осведомленным), иметь понятие (сведения)");
-const wordList5 = new wordList("speak", "говорить", "пользоваться, владеть усной речью; обладать способностью речи");
+const word1 = new word("book", "книга", "один из видов печатной продукции");
+const word2 = new word("chair", "стул", "предмет на четырех ножках, без подлокотников, обычно со спинкой, предназначен для сидения одного человека");
+const word3 = new word("window", "окно", "отверстие в стене здания или стенке какого-либо транспортного средства; застекленная рама, закрываюшая это отверстие");
+const word4 = new word("know", "знать", "ведать, быть знакомым(осведомленным), иметь понятие (сведения)");
+const word5 = new word("speak", "говорить", "пользоваться, владеть усной речью; обладать способностью речи");
 
-const arr = [wordList1, wordList2, wordList3, wordList4, wordList5];
- 
+const arr = [word1, word2, word3, word4, word5];
+
+
+flipCard.classList.add('active');
+
 slider.addEventListener("click", function() {
-    if (flipCard.classList.add("active")) {
+    if (flipCard.classList.contains("active")) {
         flipCard.classList.remove("active");
     }else {
-        flipCard.classList.add("active");
+        flipCard.classList.contains("active");
     }
 } );
 
 let currentIndex = 0;
 
 //готовим карточки со словами
-function prepareCard({title, translation, example}) {
+function prepareCard({title, translation, example} ) {
     currentWord.textContent = currentIndex + 1;
-    frontTitle.textContent = title,
-    backTitle.textContent = translation,
-    example.textContent = example,
+    frontTitle.textContent = title
+    backTitle.textContent = translation
+    example.textContent = example
     wordsProgress.value = (currentIndex + 1) / arr.length * 100;
 };
 prepareCard(arr[currentIndex]);
@@ -88,14 +91,14 @@ shuffleWords.addEventListener('click', function() {
 totalWord.textContent = arr.length;
 
 let selectedCard;
-
+//функция тестирования карточек
 function createTestCard(object) {
     const divElement = document.createElement('div');
     divElement.classList.add('card');
     const pElement = document.createElement('p');
-    pElement.append(pElement);
+    pElement.append(object);
     divElement.append(pElement);
-    divElement.onclik = () => checkTranslationsHandler(divElement);
+    divElement.onclick = () => checkTranslationsHandler(divElement);
     return divElement;
 };
 
@@ -119,10 +122,10 @@ testing.addEventListener('click', function() {
 
 function checkTranslationsHandler(currentCard) {
     if (!selectedCard) {
-        const cards = document.querySelectorAll('.card');
-        cards.forEach(card => {
-            cards.classList.remove('correct');
-            cards.classList.remove('wrong');
+        const card = document.querySelectorAll('.card');
+        card.forEach(card => {
+            card.classList.remove('correct');
+            card.classList.remove('wrong');
         });
         currentCard.style.pointerEvents = "none";
         currentCard.classList.add('correct');
